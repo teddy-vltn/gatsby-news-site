@@ -1,8 +1,7 @@
 build_site:
   stage: build
   script:
-    - docker run -v $(pwd):/app -w /app node:18 npm install
-    - docker run -v $(pwd):/app -w /app node:18 npm run build
+    - docker run --rm -v $(pwd):/app -w /app node:18 bash -c "rm -rf node_modules && npm install && npm run build"
   artifacts:
     paths:
       - public
