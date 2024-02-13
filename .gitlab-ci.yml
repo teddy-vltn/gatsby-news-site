@@ -1,14 +1,8 @@
-image: node:16
-
-stages:
-  - build
-  - deploy
-
 build_site:
   stage: build
   script:
-    - npm install
-    - npm run build
+    - docker run --rm -v $(pwd):/app -w /app node:14 npm install
+    - docker run --rm -v $(pwd):/app -w /app node:14 npm run build
   artifacts:
     paths:
       - public
