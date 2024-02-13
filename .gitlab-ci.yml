@@ -1,11 +1,7 @@
-image: alpine:latest
 
-cache:
-  paths:
-    - .cache/
-    - node_modules/
-    - public/
 
+default:
+  image: alpine:latest
 pages:
   script:
     - yarn install
@@ -13,5 +9,6 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  environment: production
