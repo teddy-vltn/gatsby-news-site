@@ -17,25 +17,25 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: "images",
-        path: `${__dirname}/src/images/`, // Utilisation de __dirname pour assurer le bon chemin
+        path: `${__dirname}/src/images/`, 
       },
-      __key: "images", // Clé pour identifier de manière unique la source des données
+      __key: "images", 
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: "pages",
-        path: `${__dirname}/src/pages/`, // Utilisation de __dirname ici aussi
+        path: `${__dirname}/src/pages/`,
       },
-      __key: "pages", // Clé unique pour cette instance de plugin
+      __key: "pages", 
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `dataset`,
-        path: `${__dirname}/src/dataset/`, // Chemin correctement formaté
+        path: `${__dirname}/src/dataset/`, 
       },
-      __key: "dataset", // Clé unique pour les articles
+      __key: "dataset", 
     },
   ],
 };
