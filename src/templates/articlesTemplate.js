@@ -23,7 +23,7 @@ export default function ArticleTemplate({ data }) {
   }
 
 export const query = graphql`
-  query ArticleBySlug($slug: String!) {
+  query ArticleBySlug($slug: String) {
     mdx(frontmatter: { slug: { eq: $slug } }) {
         body
       frontmatter {
