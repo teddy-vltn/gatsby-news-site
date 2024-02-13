@@ -18,13 +18,15 @@ exports.createPages = async function({ actions, graphql }) {
 
   result.data.allMdx.edges.forEach(({ node }) => {
     createPage({
-      path: `blog/${node.frontmatter.slug}`,
+      path: `/${node.frontmatter.slug}`, // Ensure this matches the format expected by your queries
       component : require.resolve(`./src/templates/articlesTemplate.js`),
       context: {
         slug: node.frontmatter.slug,
       },
     });
+    
   });
+
 };
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
