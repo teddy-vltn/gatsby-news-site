@@ -1,9 +1,10 @@
+image: node:16
+
 stages:
   - build
   - deploy
 
 build_site:
-  image: node:14
   stage: build
   script:
     - npm install
@@ -12,18 +13,4 @@ build_site:
     paths:
       - public
   only:
-    - main  
-
-deploy_to_gitlab_pages:
-  image: alpine:latest
-  stage: deploy
-  script:
-    - echo "Deploying to GitLab Pages"
-  artifacts:
-    paths:
-      - public
-  only:
-    - main 
-  environment:
-    name: production
-    url: https://$CI_PROJECT_NAMESPACE.gitlab.io/$CI_PROJECT_NAME/
+    - main
