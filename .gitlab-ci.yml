@@ -1,7 +1,15 @@
-build_site:
-  stage: build
+image: node:latest
+
+cache:
+  paths:
+    - .cache/
+    - node_modules/
+    - public/
+
+pages:
   script:
-    - docker run --rm -v $(pwd):/app -w /app node:20 bash -c "rm -rf node_modules && npm install && npm run build"
+    - npm install
+    - ./node_modules/.bin/gatsby build --prefix-paths
   artifacts:
     paths:
       - public
