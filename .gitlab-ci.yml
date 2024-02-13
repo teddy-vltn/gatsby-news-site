@@ -4,6 +4,8 @@ image: alpine:latest
 before_script:
   - npm install
 pages:
+  tags:
+    - docker
   script:
     - npm run build
   artifacts:
