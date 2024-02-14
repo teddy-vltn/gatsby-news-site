@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import { Link, graphql } from 'gatsby';
 import Layout from '../component/layout'; // Adjust the path according to your layout component
 
 export default function ArticleTemplate({ data }) {
@@ -12,8 +12,8 @@ export default function ArticleTemplate({ data }) {
         {mdx.author && (
           <div>
             <h2>About the Author</h2>
-            <p>Name: {mdx.author.frontmatter.name}</p>
-            <p>Bio: {mdx.author.frontmatter.bio}</p>
+            <Link to={"/author/" + mdx.author.frontmatter.slug}>{mdx.author.frontmatter.name}</Link>
+            <p>Bio: {mdx.author.body}</p>
           </div>
         )}
         <h2>Content</h2>
@@ -22,23 +22,25 @@ export default function ArticleTemplate({ data }) {
     );
   }
 
-export const query = graphql`
-  query ArticleBySlug($slug: String) {
+  export const query = graphql`
+  query ArticleBySlug($slug: String!) {
     mdx(frontmatter: { slug: { eq: $slug } }) {
-        body
+      body
       frontmatter {
         title
         description
-        authorId
+        authorSlug
       }
       author {
+        body
         frontmatter {
           name
-          bio
+          slug
         }
       }
     }
   }
 `;
+
 
 

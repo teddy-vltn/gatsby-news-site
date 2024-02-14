@@ -2,9 +2,11 @@ const { createFilePath } = require("gatsby-source-filesystem");
 
 exports.createPages = async function({ actions, graphql }) {
   const { createPage } = actions;
+
+  // Query for articles
   const result = await graphql(`
     query {
-      allMdx {
+      allMdx(filter: {frontmatter: {type: {eq: "article"}}}) { 
         edges {
           node {
             frontmatter {
@@ -16,15 +18,41 @@ exports.createPages = async function({ actions, graphql }) {
     }
   `);
 
+  // Create article pages
   result.data.allMdx.edges.forEach(({ node }) => {
     createPage({
-      path: `/${node.frontmatter.slug}`, // Ensure this matches the format expected by your queries
-      component : require.resolve(`./src/templates/articlesTemplate.js`),
+      path: `/article/${node.frontmatter.slug}`, // Adjust path as needed
+      component: require.resolve(`./src/templates/articlesTemplate.js`),
       context: {
         slug: node.frontmatter.slug,
       },
     });
-    
+  });
+
+  // Query for unique authors
+  const authorsResult = await graphql(`
+    query {
+      allMdx(filter: {frontmatter: {type: {eq: "author"}}}) { 
+        edges {
+          node {
+            frontmatter {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  // Create author pages
+  authorsResult.data.allMdx.edges.forEach(({ node }) => {
+    createPage({
+      path: `/author/${node.frontmatter.slug}`, // Ensure this path matches your Link to in author template
+      component: require.resolve(`./src/templates/authorsTemplate.js`),
+      context: {
+        slug: node.frontmatter.slug,
+      },
+    });
   });
 
 };
@@ -46,8 +74,8 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     if (node.frontmatter.type === "article") {
       createNodeField({
         node,
-        name: "authorId",
-        value: node.frontmatter.authorId,
+        name: "authorSlug",
+        value: node.frontmatter.authorSlug,
       });
     }
   }
@@ -58,13 +86,13 @@ exports.createSchemaCustomization = ({ actions }) => {
   const typeDefs = `
     type Mdx implements Node {
       frontmatter: Frontmatter
-      author: Mdx @link(by: "frontmatter.authorSlug", from: "frontmatter.authorId")
+      author: Mdx @link(by: "frontmatter.slug", from: "frontmatter.authorSlug")
     }
     type Frontmatter {
       title: String
       description: String
       slug: String
-      authorId: String
+      authorSlug: String
     }
   `;
   createTypes(typeDefs);

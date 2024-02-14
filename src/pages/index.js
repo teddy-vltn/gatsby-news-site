@@ -9,7 +9,7 @@ export default function BlogPage({ data }) {
       {data.allMdx.edges.map(({ node }) => (
         <article key={node.id}>
           <h2>
-            <Link to={node.frontmatter.slug}>{node.frontmatter.title}</Link>
+            <Link to={"/article/" + node.frontmatter.slug}>{node.frontmatter.title}</Link>
           </h2>
           <p>{node.frontmatter.description}</p>
         </article>
